@@ -12,6 +12,10 @@ function Book(title, author, pages, read) {
     this.read = read;
 }
 
+Book.prototype.toggleReadStatus = function() {
+    this.read = !this.read;
+}
+
 function addBookToLibrary(book) {
     myLibrary.push(book);
 
@@ -48,25 +52,15 @@ function addBookToLibrary(book) {
     bookDiv.appendChild(buttonsDiv);
 
     const readStatusButton = document.createElement("button");
-    if(book.read === true) {
-        readStatusButton.innerHTML = "I've Finished!"
-        readStatusButton.className = "read-status-button-finished";
-    } else {
-        readStatusButton.innerHTML = "Not Finished"
-        readStatusButton.className = "read-status-button-not-finished";
-    }
+    readStatusButton.innerHTML = book.read ? "I've Finished!" : "Not Finished";
+    readStatusButton.className = book.read ? "read-status-button-finished" : "read-status-button-not-finished";
     buttonsDiv.appendChild(readStatusButton);
 
-    readStatusButton.addEventListener(("click"), () => {
-        if (readStatusButton.innerHTML === "I've Finished!") {
-            readStatusButton.innerHTML = "Not Finished";
-            readStatusButton.className = "read-status-button-not-finished";
-            read.innerHTML = "<b>Read?</b> No"
-        } else {
-            readStatusButton.innerHTML = "I've Finished!";
-            readStatusButton.className = "read-status-button-finished";
-            read.innerHTML = "<b>Read?</b> Yes"
-        }
+    readStatusButton.addEventListener("click", () => {
+        book.toggleReadStatus();
+        readStatusButton.innerHTML = book.read ? "I've Finished!" : "Not Finished";
+        readStatusButton.className = book.read ? "read-status-button-finished" : "read-status-button-not-finished";
+        read.innerHTML = `<b>Read?</b> ${book.read ? 'Yes' : 'No'}`;
     });
 
     const deleteButton = document.createElement("button");
